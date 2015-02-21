@@ -5,7 +5,7 @@ Created on Fri Feb 20 19:08:34 2015
 @author: nacho
 """
 
-import neurolab as nl
+from sklearn.gaussian_process import GaussianProcess
 import pandas as pd
 import numpy as np
 
@@ -17,11 +17,10 @@ NUM_FEATURES = train_data.shape[1] - 1
 train_features = train_data[:, 0:NUM_FEATURES-1]
 train_targets = train_data[:,NUM_FEATURES]
 
-# Create network with 2 layers and random initialized
-net = nl.net.newff([[-7, 7]],[5, 1])
 
-#### TRAIN NN ####
-error = net.train(train_features, train_targets, epochs=500, show=100, goal=0.02)
+#### TRAIN MODEL ####
+reg = GaussianProcess()
+reg.fit(train_features, train_targets)
 
 
 #### READ TEST DATA ####
@@ -32,8 +31,7 @@ test_targets = test_data[:,NUM_FEATURES]
 
 
 #### PREDICT ####
-preds = net.sim(test_features)
-# Simulate network
+preds = reg.predict(test_features) 
 
 
 #### PERFORMANCE METRICS ####

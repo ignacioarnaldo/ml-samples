@@ -5,7 +5,7 @@ Created on Fri Feb 20 19:08:34 2015
 @author: nacho
 """
 
-from sklearn import linear_model
+from sklearn.isotonic import IsotonicRegression
 import pandas as pd
 import numpy as np
 
@@ -18,14 +18,9 @@ train_features = train_data[:, 0:NUM_FEATURES-1]
 train_targets = train_data[:,NUM_FEATURES]
 
 
-#### TRAIN LINEAR MODEL ####
-reg = linear_model.LinearRegression()
-reg.fit(train_features, train_targets)
-
-
-#### PRINT COEFFICIENTS ####
-print '\nCoefficients:'  
-print reg.coef_
+#### TRAIN MODEL ####
+reg = IsotonicRegression()
+reg.fit(train_features[:,1], train_targets)
 
 
 #### READ TEST DATA ####
@@ -36,7 +31,7 @@ test_targets = test_data[:,NUM_FEATURES]
 
 
 #### PREDICT ####
-preds = reg.predict(test_features) 
+preds = reg.predict(test_features[:,1]) 
 
 
 #### PERFORMANCE METRICS ####
