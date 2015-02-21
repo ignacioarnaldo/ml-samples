@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 """
-Created on Fri Feb 20 18:39:49 2015
+Created on Fri Feb 20 18:43:05 2015
 
 @author: Ignacio Arnaldo
 """
 
-from sklearn.ensemble import RandomForestClassifier
+from sklearn import neighbors
 import pandas as pd
 import numpy as np
 
@@ -19,9 +19,10 @@ train_features = train_data[:, 0:NUM_FEATURES-1]
 train_targets = train_data[:,NUM_FEATURES]
 
 
-#### TRAIN RANDOM FOREST ####
-clf = RandomForestClassifier(n_estimators=10,n_jobs=8)
-clf.fit(train_features, train_targets)
+#### TRAIN??? KNN ####
+n_neighbors = 10
+knn = neighbors.KNeighborsRegressor(n_neighbors)
+reg = knn.fit(train_features,train_targets)
 
 
 #### READ TEST DATA ####
@@ -32,13 +33,11 @@ test_targets = test_data[:,NUM_FEATURES]
 
 
 #### PREDICT ####
-preds = clf.predict(test_features) 
-print clf.feature_importances_
+preds = reg.predict(test_features)
 
 
 #### PERFORMANCE METRICS ####
-conf_matrix = pd.crosstab(preds,test_targets, rownames=["Pred"], colnames=["Actual"])
-print conf_matrix
-
-accuracy = np.sum(preds==test_targets) / float(len(test_targets))
-print accuracy
+mae = np.sum(np.abs(preds-test_targets)) / float(len(test_targets))
+mse = np.sum(np.square(preds-test_targets)) / float(len(test_targets))
+print '\nMAE:\t'+  str(mae)
+print '\nMSE:\t'+  str(mse)
