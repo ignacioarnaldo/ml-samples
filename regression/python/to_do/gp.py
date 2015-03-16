@@ -5,7 +5,7 @@ Created on Fri Feb 20 19:08:34 2015
 @author: nacho
 """
 
-from sklearn.isotonic import IsotonicRegression
+from sklearn.gaussian_process import GaussianProcess
 import pandas as pd
 import numpy as np
 
@@ -14,24 +14,24 @@ import numpy as np
 train_df=pd.read_csv('../../datasets/regression/winequality-white-train.csv', sep=',',header=None)
 train_data = train_df.as_matrix()
 NUM_FEATURES = train_data.shape[1] - 1
-train_features = train_data[:, 0:NUM_FEATURES-1]
+train_features = train_data[:, 0:NUM_FEATURES]
 train_targets = train_data[:,NUM_FEATURES]
 
 
 #### TRAIN MODEL ####
-reg = IsotonicRegression()
-reg.fit(train_features[:,1], train_targets)
+reg = GaussianProcess()
+reg.fit(train_features, train_targets)
 
 
 #### READ TEST DATA ####
 test_df=pd.read_csv('../../datasets/regression/winequality-white-test.csv', sep=',',header=None)
 test_data = test_df.as_matrix()
-test_features = test_data[:, 0:NUM_FEATURES-1]
+test_features = test_data[:, 0:NUM_FEATURES]
 test_targets = test_data[:,NUM_FEATURES]
 
 
 #### PREDICT ####
-preds = reg.predict(test_features[:,1]) 
+preds = reg.predict(test_features) 
 
 
 #### PERFORMANCE METRICS ####
