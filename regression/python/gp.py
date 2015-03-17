@@ -14,8 +14,8 @@ import numpy as np
 train_df=pd.read_csv('../../datasets/regression/winequality-white-train.csv', sep=',',header=None)
 train_data = train_df.as_matrix()
 NUM_FEATURES = train_data.shape[1] - 1
-train_features = train_data[:, 0:NUM_FEATURES]
-train_targets = train_data[:,NUM_FEATURES]
+train_features = train_data[0:50, 0:NUM_FEATURES]
+train_targets = train_data[0:50,NUM_FEATURES]
 
 
 #### TRAIN MODEL ####
